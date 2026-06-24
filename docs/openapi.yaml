@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Transaction API
+  version: 1.0.0
+paths:
+  /transactions/:
+    post:
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionCreate'
+      responses:
+        '200':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+  /transactions/{transaction_id}:
+    get:
+      summary: Get a transaction by ID
+      parameters:
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transaction retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+    put:
+      summary: Update a transaction by ID
+      parameters:
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionUpdate'
+      responses:
+        '200':
+          description: Transaction updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+    delete:
+      summary: Delete a transaction by ID
+      parameters:
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transaction deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: 'Transaction deleted'
+components:
+  schemas:
+    TransactionCreate:
+      type: object
+      required:
+        - amount
+        - status
+      properties:
+        amount:
+          type: number
+          format: float
+        status:
+          type: string
+    TransactionUpdate:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+        status:
+          type: string
+    TransactionResponse:
+      type: object
+      required:
+        - id
+        - amount
+        - date
+        - status
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+          format: float
+        date:
+          type: string
+          format: date-time
+        status:
+          type: string
